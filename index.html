@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>💖 Valentine Proposal 💖</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Comic Sans MS", cursive;
+}
+
+body {
+  height: 100vh;
+  background: url("BACKGROUND_IMAGE_URL") no-repeat center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Card */
+.container {
+  background: rgba(255,255,255,0.88);
+  padding: 40px;
+  border-radius: 25px;
+  text-align: center;
+  animation: pop 1s ease;
+}
+
+h1 {
+  color: #e91e63;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#yesBtn {
+  background: #ff4081;
+  color: white;
+}
+
+#noBtn {
+  background: #ddd;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+/* YES Page Content */
+#yesContent {
+  display: none;
+  animation: fadeIn 1.5s ease;
+}
+
+.images img {
+  width: 200px;
+  border-radius: 20px;
+  margin: 10px;
+  animation: floatImg 3s infinite ease-in-out;
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  font-size: 25px;
+  animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+  from { bottom: -10%; opacity: 1; }
+  to { bottom: 110%; opacity: 0; }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes floatImg {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="mainContent">
+  <h1>Will You Be My Valentine? 💘</h1>
+  <p>You make my world brighter every day ✨</p>
+
+  <div class="buttons">
+    <button id="yesBtn">YES ❤️</button>
+    <button id="noBtn">NO 😒</button>
+  </div>
+</div>
+
+<div class="container" id="yesContent">
+  <h1>She Said YES!!! 💍💖</h1>
+  <p>I promise to make you smile forever 😘</p>
+
+  <div class="images">
+    <img src="IMAGE_URL_1">
+    <img src="IMAGE_URL_2">
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const mainContent = document.getElementById("mainContent");
+const yesContent = document.getElementById("yesContent");
+
+const romanticTexts = [
+  "Are you sure? 🥺",
+  "Think again 💕",
+  "My heart will break 💔",
+  "Pleaseee 😘",
+  "I love you 💖"
+];
+
+// Move NO button
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * (window.innerWidth - 150);
+  const y = Math.random() * (window.innerHeight - 150);
+
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+
+  noBtn.innerText =
+    romanticTexts[Math.floor(Math.random() * romanticTexts.length)];
+});
+
+// YES clicked
+yesBtn.addEventListener("click", () => {
+  mainContent.style.display = "none";
+  yesContent.style.display = "block";
+  createHearts();
+});
+
+// Hearts animation
+function createHearts() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+  }, 300);
+}
+</script>
+
+</body>
+</html>
