@@ -23,6 +23,11 @@
             justify-content: center;
             align-items: center;
             display: flex;
+            transition: background 0.5s ease;
+        }
+
+        body.celebration {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
 
         /* Card container */
@@ -101,20 +106,134 @@
             animation: fadeIn 1.2s ease;
         }
 
-        /* Images after YES */
-        .images {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 25px;
+        /* Celebration title animation */
+        .celebration-title {
+            animation: bounce 1s infinite;
         }
 
-        .images img {
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Love message */
+        .love-message {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 18px;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        /* Image Slider Container */
+        .image-slider-container {
+            margin-top: 25px;
             width: 100%;
-            max-width: 320px;
-            margin: auto;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .image-slider {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .slider-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            flex-shrink: 0;
+        }
+
+        .slide img,
+        .slide video {
+            width: 100%;
+            height: auto;
+            display: block;
             border-radius: 18px;
             animation: floatImg 3s infinite ease-in-out;
+        }
+
+        /* Navigation Arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-arrow:active {
+            transform: translateY(-50%) scale(0.9);
+        }
+
+        .nav-arrow.prev {
+            left: 10px;
+        }
+
+        .nav-arrow.next {
+            right: 10px;
+        }
+
+        /* Dots Navigation */
+        .dots-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #d0d0d0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #ff4081;
+            transform: scale(1.3);
+        }
+
+        /* Swipe instruction */
+        .swipe-hint {
+            font-size: 14px;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        /* Final note */
+        .final-note {
+            margin-top: 25px;
+            font-size: 18px;
+            color: #e91e63;
+            font-weight: bold;
         }
 
         /* Floating hearts */
@@ -123,6 +242,17 @@
             font-size: 28px;
             animation: floatUp 6s linear infinite;
             pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 3s linear;
+            pointer-events: none;
+            z-index: 1000;
         }
 
         /* Animations */
@@ -130,10 +260,19 @@
             from {
                 bottom: -10%;
                 opacity: 1;
+                transform: translateX(0) rotate(0deg);
             }
 
             to {
                 bottom: 110%;
+                opacity: 0;
+                transform: translateX(50px) rotate(360deg);
+            }
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
                 opacity: 0;
             }
         }
@@ -198,12 +337,31 @@
                 gap: 22px;
             }
 
-            .images img {
+            .heart {
+                font-size: 32px;
+            }
+
+            .love-message {
+                font-size: 20px;
+                padding: 18px;
+            }
+
+            .final-note {
+                font-size: 20px;
+            }
+
+            .image-slider-container {
                 max-width: 100%;
             }
 
-            .heart {
-                font-size: 32px;
+            .nav-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .swipe-hint {
+                font-size: 16px;
             }
         }
 
@@ -224,6 +382,10 @@
             button {
                 font-size: 22px;
                 padding: 22px;
+            }
+
+            .love-message {
+                font-size: 18px;
             }
         }
 
@@ -246,6 +408,10 @@
                 font-size: 26px;
                 padding: 26px;
             }
+
+            .love-message {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
@@ -263,16 +429,56 @@
     </div>
 
     <div class="container" id="yesContent">
-        <h1>She Said YES!!! 💍💖</h1>
-        <p>I promise to make you smile forever 😘</p>
+        <h1 class="celebration-title">I Always Knew You Would Say Yes! ❤️</h1>
+        <p style="font-size: 24px; color: #e91e63;">You just made me the happiest person alive! 💖</p>
 
-        <div class="images">
-            <img src="IMAGE_URL_1" alt="Love">
-            <img src="IMAGE_URL_2" alt="Love">
+        <div class="love-message">
+            💕 I promise to make every day special, to always make you smile, 
+            and to cherish every moment we spend together. 
+            You mean the world to me! ✨
+        </div>
+
+        <!-- Image/Video Slider -->
+        <div class="image-slider-container">
+            <div class="image-slider" id="imageSlider">
+                <div class="slider-wrapper" id="sliderWrapper">
+                    <!-- Content will be generated from mediaArray -->
+                </div>
+
+                <!-- Navigation Arrows -->
+                <button class="nav-arrow prev" id="prevBtn">‹</button>
+                <button class="nav-arrow next" id="nextBtn">›</button>
+            </div>
+
+            <!-- Dots Navigation -->
+            <div class="dots-container" id="dotsContainer"></div>
+
+            <!-- Swipe Hint -->
+            <p class="swipe-hint">👆 Swipe left/right or use arrows</p>
+        </div>
+
+        <div class="final-note">
+            Forever yours! ❤️<br>
+            Happy Valentine's Day! 💝
         </div>
     </div>
 
     <script>
+        // ========================================
+        // 🎯 ADD YOUR MEDIA URLS HERE (Images & Videos)
+        // ========================================
+        const mediaArray = [
+            { type: 'image', url: 'https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID_1' },
+            { type: 'image', url: 'https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID_2' },
+            { type: 'video', url: 'https://drive.google.com/uc?export=view&id=YOUR_VIDEO_ID_1' },
+            { type: 'image', url: 'https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID_3' },
+            { type: 'video', url: 'https://drive.google.com/uc?export=view&id=YOUR_VIDEO_ID_2' },
+            // Add more images or videos like this:
+            // { type: 'image', url: 'YOUR_URL_HERE' },
+            // { type: 'video', url: 'YOUR_URL_HERE' },
+        ];
+        // ========================================
+
         const noBtn = document.getElementById("noBtn");
         const yesBtn = document.getElementById("yesBtn");
         const mainContent = document.getElementById("mainContent");
@@ -346,22 +552,161 @@
 
         // YES clicked
         yesBtn.addEventListener("click", () => {
+            // Change background color
+            document.body.classList.add('celebration');
+            
+            // Show celebration content
             mainContent.style.display = "none";
             yesContent.style.display = "block";
+            
+            // Initialize slider
+            initSlider();
+            
+            // Start animations
             createHearts();
+            createConfetti();
         });
+
+        // ========== IMAGE/VIDEO SLIDER ==========
+        let currentSlide = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function initSlider() {
+            const sliderWrapper = document.getElementById('sliderWrapper');
+            const dotsContainer = document.getElementById('dotsContainer');
+
+            // Generate slides from mediaArray
+            mediaArray.forEach((media, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+
+                if (media.type === 'image') {
+                    const img = document.createElement('img');
+                    img.src = media.url;
+                    img.alt = `Love ${index + 1}`;
+                    slide.appendChild(img);
+                } else if (media.type === 'video') {
+                    const video = document.createElement('video');
+                    video.src = media.url;
+                    video.controls = true;
+                    video.style.width = '100%';
+                    video.style.borderRadius = '18px';
+                    slide.appendChild(video);
+                }
+
+                sliderWrapper.appendChild(slide);
+
+                // Create dot
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(index));
+                dotsContainer.appendChild(dot);
+            });
+
+            // Arrow buttons
+            document.getElementById('prevBtn').addEventListener('click', prevSlide);
+            document.getElementById('nextBtn').addEventListener('click', nextSlide);
+
+            // Touch events for swipe
+            const slider = document.getElementById('imageSlider');
+            slider.addEventListener('touchstart', handleTouchStart, { passive: true });
+            slider.addEventListener('touchmove', handleTouchMove, { passive: true });
+            slider.addEventListener('touchend', handleTouchEnd);
+
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            // Pause all videos
+            pauseAllVideos();
+            currentSlide = index;
+            updateSlider();
+        }
+
+        function nextSlide() {
+            pauseAllVideos();
+            currentSlide = (currentSlide + 1) % mediaArray.length;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            pauseAllVideos();
+            currentSlide = (currentSlide - 1 + mediaArray.length) % mediaArray.length;
+            updateSlider();
+        }
+
+        function updateSlider() {
+            const sliderWrapper = document.getElementById('sliderWrapper');
+            const dots = document.querySelectorAll('.dot');
+            
+            sliderWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function pauseAllVideos() {
+            const videos = document.querySelectorAll('.slide video');
+            videos.forEach(video => {
+                video.pause();
+            });
+        }
+
+        // Touch/Swipe handlers
+        function handleTouchStart(e) {
+            touchStartX = e.touches[0].clientX;
+        }
+
+        function handleTouchMove(e) {
+            touchEndX = e.touches[0].clientX;
+        }
+
+        function handleTouchEnd() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    nextSlide(); // Swipe left
+                } else {
+                    prevSlide(); // Swipe right
+                }
+            }
+        }
 
         // Hearts animation
         function createHearts() {
             setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "heart";
-                heart.textContent = "💖";
+                const hearts = ['💖', '💕', '💗', '💓', '💝', '❤️'];
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                 heart.style.left = Math.random() * 100 + "vw";
                 document.body.appendChild(heart);
 
                 setTimeout(() => heart.remove(), 6000);
-            }, 300);
+            }, 400);
+        }
+
+        // Confetti animation
+        function createConfetti() {
+            const colors = ['#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#ffd700', '#ff69b4', '#7b68ee'];
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement("div");
+                    confetti.className = "confetti";
+                    confetti.style.left = Math.random() * 100 + "vw";
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.top = "-10px";
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
         }
     </script>
 
